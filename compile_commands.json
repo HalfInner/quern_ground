@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/pi/programming/quern_ground",
+  "command": "/usr/bin/clang++   -g -std=gnu++20 -o CMakeFiles/quern_farm.dir/user_drivers/spi_driver.cc.o -c /home/pi/programming/quern_ground/user_drivers/spi_driver.cc",
+  "file": "/home/pi/programming/quern_ground/user_drivers/spi_driver.cc"
+}
+]
