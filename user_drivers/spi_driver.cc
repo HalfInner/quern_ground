@@ -42,7 +42,7 @@ using namespace std::chrono_literals;
 
 class Spi {
 public:
-  Spi(std::string_view device = "/dev/spidev0.0", int32_t speed = 10000)
+  explicit Spi(std::string_view device = "/dev/spidev0.0", int32_t speed = 10000)
       : device_(device), speed_(speed) {
     spi_dev_fd_ = open(device.data(), O_RDWR | O_NONBLOCK);
     if (spi_dev_fd_ < 0) {
@@ -71,10 +71,6 @@ public:
 
   std::vector<uint8_t> transfer(std::vector<uint8_t> const &tx,
                                 size_t rx_size) {
-    // spi_transfer_[0].tx_buf = bufPtrToSpiBuf(tx.data());
-    // spi_transfer_[0].len = tx.size();
-    // spi_transfer_[0].cs_change = true;
-
     const size_t tx_size = tx.size();
     const size_t total_size = tx_size + rx_size;
 
@@ -155,7 +151,7 @@ private:
 
 extern "C" {
 
-void *configureDriver(char *dev, int spi_speed) {
+void* configureDriver(char *dev, int spi_speed) {
   auto spi = new Spi{dev, spi_speed};
   auto mcp3008 = new DriverMcp3008{spi};
   return mcp3008;
@@ -165,7 +161,7 @@ int getValue(void *dev_raw, int channel) {
   auto mcp3008 = static_cast<DriverMcp3008 *>(dev_raw);
   return mcp3008->read(channel);
 }
-}
+} // extern "C"
 
 int main() {
   Spi spi;

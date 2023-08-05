@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FlaskBlog</title>
+
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+        <script src="{{ url_for('static', filename= 'js/chart.js') }}"> </script>
+        <title>FlaskBlog</title>
+    </head>
+</head>
+
+<body>
+    <h1>QuernStone Farm</h1>
+    <canvas id="humidityChart" width="400" height="200"></canvas>
+    <canvas id="temperatureChart" width="400" height="200"></canvas>
+
+    <script>
+        // Retrieve data from Flask using Jinja2 template syntax
+        var chart_x = {{ data_x_humidity }};
+        var chart_y = {{ data_y_humidity }};
+        // Use the chartData to create the chart using Chart.js
+        var humidityCtx = document.getElementById('humidityChart').getContext('2d');
+        var humidityChart = new Chart(humidityCtx, {
+            type: 'line',
+            data: {
+                labels: chart_x,
+                datasets: [{
+                    label: 'Humidity',
+                    data: chart_y,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                // Chart options go here
+                scales: {
+                    yAxis: {
+                        max: 1040,
+                        min: 0,
+                    }
+                }
+            }
+        });
+
+        chart_x = {{ data_x_temperature }};
+        chart_y = {{ data_y_temperature }};
+        
+        var temperatureCtx = document.getElementById('temperatureChart').getContext('2d');
+        var temperatureCtx = new Chart(temperatureCtx, {
+            type: 'line',
+            data: {
+                labels: chart_x,
+                datasets: [{
+                    label: 'Temperature',
+                    data: chart_y,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                // Chart options go here
+                scales: {
+                    yAxis: {
+                        max: 1040,
+                        min: 0,
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
