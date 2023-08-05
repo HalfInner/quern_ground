@@ -83,6 +83,8 @@ public:
     spi_transfer_[0].rx_buf = bufPtrToSpiBuf(rx.data());
     spi_transfer_[0].len = total_size;
 
+    // The best solution would be to use two messages, but the CS jumps
+    // whenever one spi transaction ends, which close transaction.
     ASSERT_IOCTL(ioctl(spi_dev_fd_, SPI_IOC_MESSAGE(1), spi_transfer_));
     rx.erase(std::begin(rx), std::begin(rx) + tx_size);
     cleanTransfer();
@@ -140,6 +142,7 @@ public:
     uint8_t config = (st_bit | sgl_bit | channel) << 1;
     auto data = spi_->transfer({config}, 2);
 
+    // After MSB, the same LSB value is transmitted.
     // '0111 1111 1111 1111'
     // '_xxx xxxx yyy_ ____
     return (data[0] & 0x7f) << 3 | (data[1] & 0xe0) >> 5;
