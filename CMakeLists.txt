@@ -7,6 +7,9 @@ set (SOURCES
   user_drivers/spi_driver.cc
 )
 message(STATUS "System:" ${CMAKE_SYSTEM})
+
 add_executable(quern_farm ${SOURCES})
+add_library(quern_farm_api SHARED ${SOURCES})
 
 set_property(TARGET quern_farm PROPERTY CXX_STANDARD 20)
+set_property(TARGET quern_farm_api  PROPERTY CXX_STANDARD 20)
